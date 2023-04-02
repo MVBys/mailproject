@@ -1,0 +1,26 @@
+GET http://64.226.104.229/api/letter-opened/6207d403-828c-335e-b16e-5d1c1a703197
+Accept: application/json
+
+###
+POST http://127.0.0.1:8000/api/letters
+Accept: application/json
+Content-Type: application/json
+
+{
+  "email": "eleonore48@gmail.com",
+  "recipient": "abbigail@example.org",
+  "subject_letter": "dsdfs sdfsf sfs",
+  "img_token": "23423efwv23ccsdcc"
+}
+
+###
+GET http://64.226.104.229/api/letters/2?per-page=2
+Accept: application/json
+
+###
+GET http://127.0.0.1:8000/api/health-check
+Accept: application/json
+
+
+<> 2023-03-19T193223.200.json
+
