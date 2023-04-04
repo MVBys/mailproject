@@ -8,15 +8,19 @@ use App\Http\Resources\LetterResource;
 use App\Models\Letter;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
-
 
 class LetterController extends AbstractBaseController
 {
-    public function index(Request $request, User $user): LetterCollection
+    public function index(Request $request): LetterCollection
     {
+        /**@var $user User */
+        $user = Auth::getUser();
         $request->validate(['per_page' => 'int|min:1']);
-        return new LetterCollection($user->letters()->paginate($request->get('per_page'))->setPath(''));
+        return new LetterCollection(
+            $user->letters()->paginate($request->get('per_page', $this->parePage))->setPath('')
+        );
     }
 
     public function store(StoreLetterRequest $request): LetterResource
@@ -41,7 +45,6 @@ class LetterController extends AbstractBaseController
         $letter->read_count = ++$letter->read_count;
         $letter->last_open = now();
         $letter->save();
-
         //todo add notification extension
     }
 
