@@ -23,7 +23,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::any('health-check', fn() => ['status' => 'ok']);
 
 Route::post('login', [AuthController::class, 'login']);
-Route::get('/letter-opened/{uuid}', [LetterController::class, 'update']);
+Route::get('/{uuid}', [LetterController::class, 'update']);
 
 Route::middleware(['auth.token',])->group(function () {
     Route::get('/letters', [LetterController::class, 'index']);

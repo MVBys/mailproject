@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreLetterRequest;
 use App\Http\Resources\LetterCollection;
 use App\Http\Resources\LetterResource;
+use App\Mail\LetterRead;
 use App\Models\Letter;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class LetterController extends AbstractBaseController
@@ -45,7 +47,10 @@ class LetterController extends AbstractBaseController
         $letter->read_count = ++$letter->read_count;
         $letter->last_open = now();
         $letter->save();
-        //todo add notification extension
+
+        if ($letter->read_count === 1){
+            Mail::to($letter->user)->send(new LetterRead($letter));
+        }
     }
 
 }

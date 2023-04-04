@@ -13,6 +13,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::any('/{path?}', function () {
+    return abort(404, 'wrong url');
 });
+//Route::get('/mailable', function () {
+//    $letter = App\Models\Letter::find(1);
+//
+//    return new App\Mail\LetterRead($letter);
+//});

@@ -12,7 +12,7 @@ Authorization: Bearer 26857d33f0fdf7f368c60d39cf2a8aac508663b89c224b0c0dad86962f
 Accept: application/json
 
 ###
-GET http://127.0.0.1:8000/api/letter-opened/6207d403-828c-335e-b16e-5d1c1a703197
+GET http://127.0.0.1:8000/api/6207d403-828c-335e-b16e-5d1c1a703197
 Authorization: Bearer feac22e08ad6244c2678040d47d2c7952c2859df2b11025bca86adb4b7377e65
 Accept: application/json
 
