@@ -30,7 +30,7 @@ Content-Type: application/json
 
 ###
 GET http://127.0.0.1:8000/api/letters
-Authorization: Bearer feac22e08ad6244c2678040d47d2c7952c2859df2b11025bca86adb4b7377e65
+Authorization: Bearer 6fa9f046b5f43aa281843199e156ffea09a1f814aca0a244fa626f0c441438b2
 Accept: application/json
 
 ###

@@ -29,11 +29,11 @@ class AuthController extends Controller
         if ($gooResponse->get('emailAddress') != $request->get('email')) {
           return response()->json(['error'=> 'mismatch token and mail'],Response::HTTP_NOT_ACCEPTABLE);
         }
+        /** @var User $user */
+        $user = User::firstOrCreate(['email' => $request->get('email')]);
 
-        $user =  User::firstOrCreate(['email' => $request->get('email')]);
+        $token = $user->createToken($request->get('email'), expiresAt: now()->addDay())->plainTextToken;
 
-        $token = $user->createToken($request->get('email'))->plainTextToken;
-
-        return response()->json(['token'=>$token]);
+        return response()->json(['token' => $token]);
     }
 }
