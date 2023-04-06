@@ -26,13 +26,14 @@ class AuthToken
        /** @var User $user */
         $user = User::query()->where('id', function ($query) use ($token) {
             $query->select('tokenable_id')->from('personal_access_tokens')
-                ->where('token', $token)
-                ->where('expires_at','>', now());
+                ->where('token', $token);
+//                ->where('expires_at','>', now());
         })->first();
 
         if (!$user){
             return response()->json(['error'=> 'UNAUTHORIZED'],Response::HTTP_UNAUTHORIZED);
         }
+
         Auth::setUser($user);
         return $next($request);
     }

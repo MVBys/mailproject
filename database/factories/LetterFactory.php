@@ -21,7 +21,7 @@ class LetterFactory extends Factory
         return [
 //            'user_id'=>$this->faker->unique()->numberBetween(1),
             'user_id'=>$this->faker->randomElement($userIds),
-            'recipient'=>$this->faker->email(),
+            'recipient'=>[$this->faker->email(),$this->faker->email()],
             'img_token' => $this->faker->uuid(),
             'subject_letter'=>$this->faker->sentence(4),
             'last_open'=>$this->faker->dateTime(),

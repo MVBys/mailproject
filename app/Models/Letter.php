@@ -24,6 +24,9 @@ class Letter extends Model
         'created_at',
         'updated_at'
     ];
+    protected $casts = [
+        'recipient' => 'array',
+    ];
 
     public function user(): BelongsTo
     {

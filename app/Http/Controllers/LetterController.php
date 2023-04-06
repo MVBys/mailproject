@@ -9,16 +9,14 @@ use App\Mail\LetterRead;
 use App\Models\Letter;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Str;
 
 class LetterController extends AbstractBaseController
 {
     public function index(Request $request): LetterCollection
     {
         /**@var $user User */
-        $user = Auth::getUser();
+        $user = auth()->user();
         $request->validate(['per_page' => 'int|min:1']);
         return new LetterCollection(
             $user->letters()->paginate($request->get('per_page', $this->parePage))->setPath('')
@@ -28,7 +26,7 @@ class LetterController extends AbstractBaseController
     public function store(StoreLetterRequest $request): LetterResource
     {
         /**@var $user User */
-        $user = User::query()->Where('email', $request->get('email'))->first();
+        $user = auth()->user();
 
         $prepareData = array_merge($request->only('recipient', 'subject_letter'), [
             'img_token' => $request->get('img_token'),
@@ -48,9 +46,10 @@ class LetterController extends AbstractBaseController
         $letter->last_open = now();
         $letter->save();
 
-        if ($letter->read_count === 1){
-            Mail::to($letter->user)->send(new LetterRead($letter));
-        }
+        //todo we need mailer!!!!!!!
+//        if ($letter->read_count === 1) {
+//            Mail::to($letter->user)->send(new LetterRead($letter));
+//        }
     }
 
 }

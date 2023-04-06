@@ -5,35 +5,60 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
 {
-    private readonly string $urlGetUsers;
+    private readonly string $urlGetUser;
 
     public function __construct()
     {
-        $this->urlGetUsers = 'https://gmail.googleapis.com/gmail/v1/users/';
+        $this->urlGetUser = 'https://www.googleapis.com/oauth2/v3/userinfo';
     }
 
-    public function login(Request $request): JsonResponse
+    public function loginUseGooToken(Request $request): JsonResponse
     {
         $request->validate([
-            'email' => 'required|email',
             'goo_token' => 'required',
         ]);
 
-        $gooResponse = Http::withToken($request->get('goo_token'))->get($this->urlGetUsers)->collect();
+        $gooResponse = Http::withToken($request->get('goo_token'))->get($this->urlGetUser)->collect();
 
-        if ($gooResponse->get('emailAddress') != $request->get('email')) {
-          return response()->json(['error'=> 'mismatch token and mail'],Response::HTTP_NOT_ACCEPTABLE);
+        if ($request->get('email')) {
+            return response()->json(['error' => 'UNAUTHORIZED'], Response::HTTP_UNAUTHORIZED);
         }
         /** @var User $user */
-        $user = User::firstOrCreate(['email' => $request->get('email')]);
+        $user = User::query()->firstOrCreate(
+            ['email' => $gooResponse->get('email')],
+            [
+                'name' => $gooResponse->get('name'),
+                'email_verified_at' => now(),
+                'password' => Hash::make($gooResponse->get('sub'))
+            ]
+        );
 
+        $token = $user->createToken($gooResponse->get('email'), expiresAt: now()->addDay())->plainTextToken;
+
+        return response()->json(['token' => $token]);
+    }
+
+    public function loginUsePassword(Request $request): JsonResponse
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|string',
+        ]);
+
+        if (!Auth::attempt($request->only('email', 'password'))) {
+            return response()->json([
+                'message' => 'Login information is invalid.'
+            ], 401);
+        }
+        $user = User::query()->where(['email' => $request->get('email')])->first();
         $token = $user->createToken($request->get('email'), expiresAt: now()->addDay())->plainTextToken;
-
         return response()->json(['token' => $token]);
     }
 }

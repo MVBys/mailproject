@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->id();
             $table->string('img_token')->unique();
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
-            $table->string('recipient');
+            $table->json('recipient');
             $table->string('subject_letter');
             $table->timestamp('last_open')->nullable();
             $table->integer('read_count')->default(0);

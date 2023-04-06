@@ -24,20 +24,19 @@ class StoreLetterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email'=>[
+            'recipient' => [
                 'required',
-                'email',
-                Rule::exists('users', 'email'),
+                'array',
             ],
-            'recipient'=>[
-                'required',
+            'recipient*' => [
                 'email',
             ],
-            'subject_letter'=>[
+            'subject_letter' => [
+                'required',
                 'string',
                 'max:10000'
             ],
-            'img_token'=>[
+            'img_token' => [
                 'required',
                 'string',
                 'max:255',
