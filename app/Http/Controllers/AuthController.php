@@ -42,7 +42,10 @@ class AuthController extends Controller
 
         $token = $user->createToken($gooResponse->get('email'), expiresAt: now()->addDay())->plainTextToken;
 
-        return response()->json(['token' => $token]);
+        return response()->json([
+            'token' => $token,
+            'exp' => config('sanctum.expiration')
+        ]);
     }
 
     public function loginUsePassword(Request $request): JsonResponse
@@ -59,6 +62,9 @@ class AuthController extends Controller
         }
         $user = User::query()->where(['email' => $request->get('email')])->first();
         $token = $user->createToken($request->get('email'), expiresAt: now()->addDay())->plainTextToken;
-        return response()->json(['token' => $token]);
+        return response()->json([
+            'token' => $token,
+            'exp' => config('sanctum.expiration')
+        ]);
     }
 }
