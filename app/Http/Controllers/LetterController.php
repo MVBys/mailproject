@@ -5,11 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreLetterRequest;
 use App\Http\Resources\LetterCollection;
 use App\Http\Resources\LetterResource;
-use App\Mail\LetterRead;
 use App\Models\Letter;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 
 class LetterController extends AbstractBaseController
 {
@@ -19,7 +17,11 @@ class LetterController extends AbstractBaseController
         $user = auth()->user();
         $request->validate(['per_page' => 'int|min:1']);
         return new LetterCollection(
-            $user->letters()->paginate($request->get('per_page', $this->parePage))->setPath('')
+            $user->letters()
+                ->latest()
+                ->orderByDesc('id')
+                ->paginate($request->get('per_page', $this->parePage))
+                ->setPath('')
         );
     }
 
