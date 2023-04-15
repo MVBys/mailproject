@@ -36,6 +36,10 @@ class StoreLetterRequest extends FormRequest
                 'string',
                 'max:10000'
             ],
+            'created_real'=>[
+                'required',
+                'date'
+            ],
             'img_token' => [
                 'required',
                 'string',

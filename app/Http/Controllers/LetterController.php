@@ -30,9 +30,9 @@ class LetterController extends AbstractBaseController
         /**@var $user User */
         $user = auth()->user();
 
-        $prepareData = array_merge($request->only('recipient', 'subject_letter'), [
+        $prepareData = array_merge($request->only('recipient', 'subject_letter', 'created_real'), [
             'img_token' => $request->get('img_token'),
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
 
         $letter = $user->letters()->create($prepareData);
