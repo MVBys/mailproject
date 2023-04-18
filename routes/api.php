@@ -18,6 +18,8 @@ Route::post('/users/remove-pro', [UserController::class, 'removeProStatus']);
 Route::middleware(['auth:sanctum',])->group(function () {
     Route::get('/letters', [LetterController::class, 'index']);
     Route::post('/letters', [LetterController::class, 'store']);
+
+    Route::get('/users/authorized', [UserController::class, 'authorized']);
 });
 
 

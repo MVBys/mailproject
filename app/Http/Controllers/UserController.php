@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -39,5 +40,10 @@ class UserController extends AbstractBaseController
         ]);
 
         return response()->json(['result' => !!$result]);
+    }
+
+    public function authorized(): UserResource
+    {
+        return new UserResource(auth()->user());
     }
 }
