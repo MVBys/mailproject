@@ -38,7 +38,7 @@ class StoreLetterRequest extends FormRequest
             ],
             'created_real'=>[
                 'required',
-                'date'
+//                todo need more rules
             ],
             'img_token' => [
                 'required',
