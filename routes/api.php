@@ -20,6 +20,7 @@ Route::middleware(['auth:sanctum',])->group(function () {
     Route::post('/letters', [LetterController::class, 'store']);
 
     Route::get('/users/authorized', [UserController::class, 'authorized']);
+    Route::delete('/users', [UserController::class, 'destroy']);
 });
 
 

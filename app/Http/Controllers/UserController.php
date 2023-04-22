@@ -6,6 +6,7 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
 class UserController extends AbstractBaseController
@@ -45,5 +46,12 @@ class UserController extends AbstractBaseController
     public function authorized(): UserResource
     {
         return new UserResource(auth()->user());
+    }
+
+    public function destroy(): JsonResponse
+    {
+        $user = auth()->user();
+        $result = $user->delete();
+        return response()->json(['result' => !!$result]);
     }
 }
