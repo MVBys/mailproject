@@ -27,7 +27,7 @@ class AuthController extends Controller
 
         $gooResponse = Http::withToken($request->get('goo_token'))->get($this->urlGetUser)->collect();
 
-        if ($request->get('email')) {
+        if (!$gooResponse->get('email')) {
             return response()->json(['error' => 'UNAUTHORIZED'], Response::HTTP_UNAUTHORIZED);
         }
         /** @var User $user */
@@ -40,7 +40,7 @@ class AuthController extends Controller
             ]
         );
 
-        $token = $user->createToken($gooResponse->get('email'), expiresAt: now()->addDay())->plainTextToken;
+        $token = $user->createToken($gooResponse->get('email'))->plainTextToken;
 
         return response()->json([
             'token' => $token,
