@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\LetterController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,6 +22,11 @@ Route::middleware(['auth:sanctum',])->group(function () {
 
     Route::get('/users/authorized', [UserController::class, 'authorized']);
     Route::delete('/users', [UserController::class, 'destroy']);
+
+    Route::get('/settings/default-list', [SettingController::class, 'getDefaultList']);
+    Route::get('/settings', [SettingController::class, 'getUserSetting']);
+    Route::patch('/settings', [SettingController::class, 'updateUserSettings']);
+
 });
 
 
