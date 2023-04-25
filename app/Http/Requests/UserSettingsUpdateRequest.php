@@ -26,23 +26,31 @@ class UserSettingsUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'settings' => [
-                'required',
-                'array',
-                'max:' . Setting::query()->count(),
-            ],
-            'settings.*' =>[
-                'array',
-            ],
-            'settings.*.setting_id' => [
-                'required',
-                'integer',
-                new CheckSettingPro(),
-            ],
-            'settings.*.enabled' => [
+            'emails_opened' => [
                 'required',
                 'bool',
-            ]
+                new CheckSettingPro()
+            ],
+            'not_opened_24' => [
+                'required',
+                'bool',
+                new CheckSettingPro()
+            ],
+            'no_reply_72' => [
+                'required',
+                'bool',
+                new CheckSettingPro()
+            ],
+            'daily_report' => [
+                'required',
+                'bool',
+                new CheckSettingPro()
+            ],
+            'many_opened' => [
+                'required',
+                'bool',
+                new CheckSettingPro()
+            ],
         ];
     }
 }

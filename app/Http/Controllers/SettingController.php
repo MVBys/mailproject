@@ -26,14 +26,15 @@ class SettingController extends Controller
 
     public function updateUserSettings(UserSettingsUpdateRequest $request): JsonResponse
     {
-        $prepareSettings = [];
-        foreach ($request->get('settings') as $setting) {
-            $prepareSettings[$setting['setting_id']] = ['enabled' => $setting['enabled']];
-        }
+        $settings = $request->only(['emails_opened', 'not_opened_24', 'no_reply_72', 'daily_report', 'many_opened']);
 
         /** @var User $user */
         $user = auth()->user();
-        $user->settings()->syncWithoutDetaching($prepareSettings);
+        foreach ($settings as $key => $value) {
+            $user->settings()->where('name', $key)->update([
+                'enabled' => $value
+            ]);
+        }
 
         return response()->json(['result' => true]);
     }

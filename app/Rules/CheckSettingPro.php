@@ -17,10 +17,10 @@ class CheckSettingPro implements ValidationRule
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         /** @var Setting $setting */
-        $setting = Setting::query()->find($value);
+        $setting = Setting::query()->where('name', $attribute)->first();
         /** @var User $user */
         $user = auth()->user();
-        if ($setting->is_pro && !$user->isPro()) {
+        if ($value && $setting->is_pro && !$user->isPro()) {
             $fail('The :attribute only available for pro version.');
         }
     }
